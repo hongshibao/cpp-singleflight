@@ -48,16 +48,16 @@ include(Warnings)
 # option(ENABLE_LTO "Enable to add Link Time Optimization." OFF)
 # option(ENABLE_CCACHE "Enable to add Ccache." OFF)
 option(SINGLEFLIGHT_BUILD_SHARED_LIB "Build ${PROJECT_NAME} shared library." ON)
+option(SINGLEFLIGHT_INSTALL "Should ${PROJECT_NAME} be added to the install list? Useful if included using add_subdirectory." ON)
 cmake_dependent_option(SINGLEFLIGHT_BUILD_TESTS
     "Build ${PROJECT_NAME} project unit tests." ON # By default we want tests if CTest is enabled
     "BUILD_TESTING" OFF # Stay coherent with CTest variables
 )
-option(SINGLEFLIGHT_INSTALL "Should ${PROJECT_NAME} be added to the install list? Useful if included using add_subdirectory." ON)
 
 # Global CMake variables are set here
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# Whe building a shared library, you do not want to export all symbols by default
+# When building a shared library, you do not want to export all symbols by default
 # gcc (and hence clang) are wrong about this.
 #
 # For more information, see https://gcc.gnu.org/wiki/Visibility and https://www.youtube.com/embed/m0DwB4OvDXk
@@ -183,8 +183,7 @@ if(SINGLEFLIGHT_INSTALL)
 
         # If you want to split between runtime and dev for examples, take a look at COMPONENT, NAMELINK_COMPONENT etc
         # More info in Craig Scott's talk "Deep CMake for library authors" https://www.youtube.com/watch?v=m0DwB4OvDXk
-        INCLUDES
-        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+        INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
     )
 
     # This time, install all the exported targets under the ${PROJECT_NAME}_Targets name.
@@ -205,7 +204,7 @@ if(SINGLEFLIGHT_INSTALL)
         ${SINGLEFLIGHT_INSTALL_CMAKEDIR}
     )
     install(DIRECTORY
-        ${INCLUDE_DIR}/singleflight
+        ${INCLUDE_DIR}/
         DESTINATION
         ${CMAKE_INSTALL_INCLUDEDIR}
     )
