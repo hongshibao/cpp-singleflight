@@ -63,4 +63,4 @@ class SingleFlight {
     std::mutex _doing_mtx;
 };
 
-};  // namespace singleflight
+}  // namespace singleflight

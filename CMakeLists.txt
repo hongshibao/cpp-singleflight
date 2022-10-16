@@ -1,3 +1,13 @@
+#
+# Project specific options :
+# - SINGLEFLIGHT_BUILD_SHARED_LIB
+# - SINGLEFLIGHT_BUILD_TESTS (requires BUILD_TESTING set to ON)
+# - SINGLEFLIGHT_INSTALL
+# Other options might be available through the cmake scripts including (not exhaustive):
+# - ENABLE_WARNINGS_SETTINGS
+# - ENABLE_LTO
+#
+
 cmake_minimum_required(VERSION 3.14)
 
 if(CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
@@ -32,7 +42,6 @@ include(Warnings)
 # ##############
 
 # option(USE_CONAN "Whether to use conan or vcpkg" ON)
-# option(ENABLE_WARNINGS "Enable to add warnings to a target." ON)
 # option(ENABLE_COVERAGE "Enable a Code Coverage build." OFF)
 # option(ENABLE_CLANG_TIDY "Enable to add clang tidy." OFF)
 # option(ENABLE_CPPCHECK "Enable to add cppcheck." OFF)
@@ -82,9 +91,6 @@ target_include_directories(${LIBRARY_NAME}
     $<BUILD_INTERFACE:${INCLUDE_DIR}> # Due to the way installation work, we only want this path set when building, not once installed
 )
 
-# Set the compile options you want (change as needed).
-# target_set_warnings(${LIBRARY_NAME} ENABLE ALL AS_ERROR ALL DISABLE Annoying)
-
 # Add an executable for the file app/main.cpp.
 # If you add more executables, copy these lines accordingly.
 # add_executable(main app/main.cpp) # Name of exec. and location of file.
@@ -115,6 +121,9 @@ target_compile_definitions(${LIBRARY_NAME} PUBLIC SINGLEFLIGHT_COMPILED_LIB)
 # Give a 'namespaced' name to libraries targets, as it can't be mistaken with system libraries
 # Use the same namespace as the one from the install command. This is only really needed if you want to support usage of your library through add_subdirectory.
 add_library(${PROJECT_NAME}::${LIBRARY_NAME} ALIAS ${LIBRARY_NAME})
+
+# CMake scripts extensions
+target_set_warnings(${LIBRARY_NAME} ENABLE ALL AS_ERROR ALL DISABLE Annoying) # Helper that can set default warning flags for you
 
 # ======#
 # Tests #
