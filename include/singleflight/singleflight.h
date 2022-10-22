@@ -3,9 +3,15 @@
 #include <condition_variable>
 #include <memory>
 #include <mutex>
+#include <string>
 #include <unordered_map>
 
 namespace singleflight {
+
+class FuncCallFailedException : public std::runtime_error {
+   public:
+    FuncCallFailedException(const std::string& msg) : std::runtime_error{msg} {}
+};
 
 template <typename TKey, typename TRet>
 class SingleFlight {
@@ -23,7 +29,10 @@ class SingleFlight {
             auto ptr = it->second;
             std::unique_lock<std::mutex> done_lock(ptr->mtx);
             ptr->cv.wait(done_lock, [ptr]() -> bool { return ptr->done; });
-            // Directly return the result
+            // Check exception and result
+            if (ptr->has_ex) {
+                throw ptr->ex;
+            }
             return ptr->result;
         }
 
@@ -33,8 +42,17 @@ class SingleFlight {
         _doing[key] = ptr;
         lock.unlock();
 
-        // Call the actual function to fetch the result
-        ptr->result = func(args...);
+        try {
+            // Call the actual function to fetch the result
+            ptr->result = func(args...);
+        } catch (const std::exception& ex) {
+            ptr->has_ex = true;
+            ptr->ex = FuncCallFailedException(ex.what());
+        } catch (...) {
+            ptr->has_ex = true;
+            ptr->ex = FuncCallFailedException("Func call threw non-std-exception");
+        }
+
         {
             std::lock_guard<std::mutex> done_lock_guard(ptr->mtx);
             ptr->done = true;
@@ -47,6 +65,9 @@ class SingleFlight {
         _doing.erase(key);
 
         // Return the result for the current thread
+        if (ptr->has_ex) {
+            throw ptr->ex;
+        }
         return ptr->result;
     }
 
@@ -56,8 +77,10 @@ class SingleFlight {
         std::mutex mtx;
         std::condition_variable cv;
         TRet result;
+        bool has_ex;
+        FuncCallFailedException ex;
 
-        DoingRecord() : done(false) {}
+        DoingRecord() : done(false), has_ex(false), ex("") {}
     };
     std::unordered_map<TKey, std::shared_ptr<DoingRecord>> _doing;
     std::mutex _doing_mtx;

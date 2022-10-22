@@ -47,8 +47,9 @@ include(Warnings)
 # option(ENABLE_CPPCHECK "Enable to add cppcheck." OFF)
 # option(ENABLE_LTO "Enable to add Link Time Optimization." OFF)
 # option(ENABLE_CCACHE "Enable to add Ccache." OFF)
-option(SINGLEFLIGHT_BUILD_SHARED_LIB "Build ${PROJECT_NAME} shared library." ON)
-option(SINGLEFLIGHT_INSTALL "Should ${PROJECT_NAME} be added to the install list? Useful if included using add_subdirectory." ON)
+option(SINGLEFLIGHT_BUILD_SHARED_LIB "Build ${PROJECT_NAME} project shared library." ON)
+option(SINGLEFLIGHT_INSTALL "Should ${PROJECT_NAME} project be added to the install list? Useful if included using add_subdirectory." ON)
+option(SINGLEFLIGHT_BUILD_EXAMPLES "Build ${PROJECT_NAME} project examples." OFF)
 cmake_dependent_option(SINGLEFLIGHT_BUILD_TESTS
     "Build ${PROJECT_NAME} project unit tests." ON # By default we want tests if CTest is enabled
     "BUILD_TESTING" OFF # Stay coherent with CTest variables
@@ -133,6 +134,16 @@ target_set_warnings(${LIBRARY_NAME} ENABLE ALL AS_ERROR ALL DISABLE Annoying) # 
 if(SINGLEFLIGHT_BUILD_TESTS)
     message(STATUS "Adding tests subdirectory")
     add_subdirectory(tests)
+endif()
+
+# =========#
+# Examples #
+# =========#
+
+# Set up examples (see examples/CMakeLists.txt).
+if(SINGLEFLIGHT_BUILD_EXAMPLES)
+    message(STATUS "Adding examples subdirectory")
+    add_subdirectory(examples)
 endif()
 
 # ##############
