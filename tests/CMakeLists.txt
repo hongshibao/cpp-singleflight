@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.14)
 
 # List all files containing tests.
 set(TEST_FILES # All .cpp files in tests/
-    main.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/main.cpp
 )
 
 set(TEST_MAIN unit_tests) # Name for test executable.
@@ -10,12 +10,7 @@ set(TEST_RUNNER_PARAMS "") # Any arguemnts to feed the test runner.
 
 find_package(Threads REQUIRED)
 
-# --------------------------------------------------------------------------------
-# Make Tests.
-# --------------------------------------------------------------------------------
 add_executable(${TEST_MAIN} ${TEST_FILES})
-
-# target_link_libraries(${TEST_MAIN} PRIVATE ${LIBRARY_NAME} doctest)
 target_link_libraries(${TEST_MAIN} PRIVATE ${LIBRARY_NAME} Threads::Threads)
 set_target_properties(
     ${TEST_MAIN}
@@ -26,7 +21,8 @@ set_target_properties(
     CXX_EXTENSIONS NO
 )
 
-# target_set_warnings(${TEST_MAIN} ENABLE ALL AS_ERROR ALL DISABLE Annoying) # Set warnings (if needed).
+target_set_warnings(${TEST_MAIN} ENABLE ALL AS_ERROR ALL DISABLE Annoying) # Set warnings.
+
 add_test(
 
     # Use some per-module/project prefix so that it is easier to run only tests for this module
