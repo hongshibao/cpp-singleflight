@@ -7,7 +7,7 @@
 
 using namespace std;
 
-// SingleFlight example code
+// SingleFlight example code 1
 void example_1(singleflight::SingleFlight<string, string>& sf) {
     // Simulate a heavy function call
     auto long_running_func = [](int tid) -> string {
@@ -35,7 +35,7 @@ void example_1(singleflight::SingleFlight<string, string>& sf) {
     }
 }
 
-// SingleFlight example code (with std::exception thrown)
+// SingleFlight example code 2 (with std::exception thrown)
 void example_2(singleflight::SingleFlight<string, string>& sf) {
     // Simulate a function call which throws std::exception
     auto throwing_exception_func = [](int tid) -> string {
