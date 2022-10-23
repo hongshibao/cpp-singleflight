@@ -2,6 +2,7 @@
 # Project specific options :
 # - SINGLEFLIGHT_BUILD_SHARED_LIB
 # - SINGLEFLIGHT_BUILD_TESTS (requires BUILD_TESTING set to ON)
+# - SINGLEFLIGHT_BUILD_EXAMPLES
 # - SINGLEFLIGHT_INSTALL
 # Other options might be available through the cmake scripts including (not exhaustive):
 # - ENABLE_WARNINGS_SETTINGS
@@ -92,14 +93,6 @@ target_include_directories(${LIBRARY_NAME}
     $<BUILD_INTERFACE:${INCLUDE_DIR}> # Due to the way installation work, we only want this path set when building, not once installed
 )
 
-# Add an executable for the file app/main.cpp.
-# If you add more executables, copy these lines accordingly.
-# add_executable(main app/main.cpp) # Name of exec. and location of file.
-# target_link_libraries(main PRIVATE ${LIBRARY_NAME}) # Link the executable to library (if it uses it).
-
-# target_set_warnings(main ENABLE ALL AS_ERROR ALL DISABLE Annoying) # Set warnings (if needed).
-# target_enable_lto(main optimized) # enable link-time-optimization if available for non-debug configurations
-
 # Set the properties you require, e.g. what C++ standard to use.
 set_target_properties(
     ${LIBRARY_NAME}
@@ -108,13 +101,6 @@ set_target_properties(
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO
 )
-
-# The following properties are useful when you want to have an 'install' target
-# set_target_properties(${LIBRARY_NAME}
-# PROPERTIES
-# PUBLIC_HEADER ${CMAKE_CURRENT_LIST_DIR}/include/singleflight/singleflight.h # Headers listed here will automatically be copied when installing. Note that directories hierarchy is not preserved.
-# DEBUG_POSTFIX d # We had a postfix so that we can install debug and release libraries side by side (Windows way)
-# )
 
 # For custom settings.
 target_compile_definitions(${LIBRARY_NAME} PUBLIC SINGLEFLIGHT_COMPILED_LIB)
@@ -178,7 +164,7 @@ if(SINGLEFLIGHT_INSTALL)
         # List of paths that needs to be relocated once installed
         # For example if the variable containing the path is named MY_PATH, all instances of @PACKAGE_MY_PATH@ in the template will be replaced by the relocated version of the path
         # This is mostly only needed when you want to install cmake modules or have an unusual layout that cmake is not aware of.
-        PATH_VARS SINGLEFLIGHT_MODULE_INSTALL_DIR # This will be exposed as @PACKAGE_SingleFlight_MODULE_INSTALL_DIR@ in the template file
+        PATH_VARS SINGLEFLIGHT_MODULE_INSTALL_DIR # This will be exposed as @PACKAGE_SINGLEFLIGHT_MODULE_INSTALL_DIR@ in the template file
 
         # Imported targets do not require the following macros
         NO_SET_AND_CHECK_MACRO
@@ -235,10 +221,6 @@ endif()
 # include(LTO)
 # include(Ccache)
 
-# if(ENABLE_TESTING)
-# include(CTest)
-# endif()
-
 # if(ENABLE_COVERAGE)
 # include(CodeCoverage)
 # append_coverage_compiler_flags()
@@ -283,14 +265,3 @@ endif()
 
 # add_subdirectory(app)
 # add_subdirectory(tests)
-
-# ## INSTALL TARGETS
-# install(TARGETS main
-# EXPORT ${LIBRARY_NAME}
-# ARCHIVE DESTINATION lib
-# LIBRARY DESTINATION lib
-# RUNTIME DESTINATION bin)
-
-# install(TARGETS ${LIBRARY_NAME}
-# ARCHIVE DESTINATION lib
-# LIBRARY DESTINATION lib)

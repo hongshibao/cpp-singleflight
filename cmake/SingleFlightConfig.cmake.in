@@ -8,7 +8,7 @@ set(CMAKE_MAP_IMPORTED_CONFIG_RELWITHDEBINFO RelWithDebInfo Release MinSizeRel D
 set(CMAKE_MAP_IMPORTED_CONFIG_RELEASE Release RelWithDebInfo MinSizeRel Debug "")
 
 # Since we install some cmake modules, add them to the modules path
-list(APPEND CMAKE_MODULE_PATH "@PACKAGE_SingleFlight_MODULE_INSTALL_DIR@")
+list(APPEND CMAKE_MODULE_PATH "@PACKAGE_SINGLEFLIGHT_MODULE_INSTALL_DIR@")
 
 # If your package depends an another one, you MUST specify it here
 include(CMakeFindDependencyMacro)
