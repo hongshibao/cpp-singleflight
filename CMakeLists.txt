@@ -20,7 +20,7 @@ endif()
 project(
     "SingleFlight"
     VERSION 1.0.0
-    LANGUAGES C CXX
+    LANGUAGES CXX
 )
 
 # ###########################

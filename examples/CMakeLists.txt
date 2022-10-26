@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
 
 # List all files containing examples.
-set(EXAMPLE_FILES # All .cpp files in example/
+set(EXAMPLE_FILES # All .cpp files in examples/
     ${CMAKE_CURRENT_LIST_DIR}/example.cpp
 )
 
