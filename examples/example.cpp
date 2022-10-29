@@ -1,4 +1,5 @@
 #include <singleflight/singleflight.h>
+#include <spdlog/spdlog.h>
 
 #include <iostream>
 #include <string>
@@ -11,16 +12,16 @@ using namespace std;
 void example_1(singleflight::SingleFlight<string, string>& sf) {
     // Simulate a heavy function call
     auto long_running_func = [](int tid) -> string {
-        cout << "long_running_func call by Thread " << tid << endl;
+        spdlog::info("long_running_func call by Thread {}", tid);
         this_thread::sleep_for(1000ms);
         return "Result from long_running_func";
     };
 
     // Thread entry function
     auto thread_entry_func = [&](int tid) {
-        cout << "Thread " << tid << " starts" << endl;
+        spdlog::info("Thread {} starts", tid);
         auto res = sf.Do("some-key", long_running_func, tid);
-        cout << "Thread " << tid << " result: " << res << endl;
+        spdlog::info("Thread {} result: {}", tid, res);
     };
 
     // Launch threads
@@ -39,7 +40,7 @@ void example_1(singleflight::SingleFlight<string, string>& sf) {
 void example_2(singleflight::SingleFlight<string, string>& sf) {
     // Simulate a function call which throws std::exception
     auto throwing_exception_func = [](int tid) -> string {
-        cout << "throwing_exception_func call by Thread " << tid << endl;
+        spdlog::info("throwing_exception_func call by Thread {}", tid);
         this_thread::sleep_for(500ms);
         throw runtime_error{"std::runtime_error from throwing_exception_func"};
         return "Result from throwing_exception_func";
@@ -47,12 +48,12 @@ void example_2(singleflight::SingleFlight<string, string>& sf) {
 
     // Thread entry function
     auto thread_entry_func = [&](int tid) {
-        cout << "Thread " << tid << " starts" << endl;
+        spdlog::info("Thread {} starts", tid);
         try {
             auto res = sf.Do("some-key", throwing_exception_func, tid);
-            cout << "Thread " << tid << " result: " << res << endl;
+            spdlog::info("Thread {} result: {}", tid, res);
         } catch (const singleflight::FuncCallFailedException& ex) {
-            cout << "Caught exception in Thread " << tid << ": " << ex.what() << endl;
+            spdlog::info("Caught exception in Thread {}: {}", tid, ex.what());
             return;
         }
     };
@@ -73,16 +74,14 @@ int main() {
     singleflight::SingleFlight<string, string> sf;
 
     // Run example_1
-    cout << "====== Running example_1 ======" << endl;
+    spdlog::info("====== Running example_1 ======");
     example_1(sf);
-    cout << "====== Finished example_1 ======" << endl
-         << endl;
+    spdlog::info("====== Finished example_1 ======\n");
 
     // Run example_2
-    cout << "====== Running example_2 ======" << endl;
+    spdlog::info("====== Running example_2 ======");
     example_2(sf);
-    cout << "====== Finished example_2 ======" << endl
-         << endl;
+    spdlog::info("====== Finished example_2 ======\n");
 
     return 0;
 }

@@ -9,8 +9,17 @@ set(EXAMPLE_MAIN example) # Name for example executable.
 
 find_package(Threads REQUIRED)
 
+FetchContent_Declare(
+    spdlog
+    GIT_REPOSITORY https://github.com/gabime/spdlog
+    GIT_TAG v1.10.0
+    GIT_SHALLOW TRUE
+    FIND_PACKAGE_ARGS
+)
+FetchContent_MakeAvailable(spdlog)
+
 add_executable(${EXAMPLE_MAIN} ${EXAMPLE_FILES})
-target_link_libraries(${EXAMPLE_MAIN} PRIVATE ${LIBRARY_NAME} Threads::Threads)
+target_link_libraries(${EXAMPLE_MAIN} PRIVATE ${LIBRARY_NAME} Threads::Threads spdlog::spdlog)
 set_target_properties(
     ${EXAMPLE_MAIN}
     PROPERTIES
