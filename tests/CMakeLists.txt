@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.14)
 
 # List all files containing tests.
 set(TEST_FILES # All .cpp files in tests/
-    ${CMAKE_CURRENT_LIST_DIR}/main.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/test.cpp
 )
 
 set(TEST_MAIN unit_tests) # Name for test executable.
@@ -10,8 +10,29 @@ set(TEST_RUNNER_PARAMS "") # Any arguemnts to feed the test runner.
 
 find_package(Threads REQUIRED)
 
+# Fetch external dependencies
+include(FetchContent)
+
+FetchContent_Declare(
+    spdlog
+    GIT_REPOSITORY https://github.com/gabime/spdlog
+    GIT_TAG v1.10.0
+    GIT_SHALLOW TRUE
+    FIND_PACKAGE_ARGS
+)
+FetchContent_MakeAvailable(spdlog)
+
+FetchContent_Declare(
+    Catch2
+    GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+    GIT_TAG v3.1.1
+    GIT_SHALLOW TRUE
+    FIND_PACKAGE_ARGS
+)
+FetchContent_MakeAvailable(Catch2)
+
 add_executable(${TEST_MAIN} ${TEST_FILES})
-target_link_libraries(${TEST_MAIN} PRIVATE ${LIBRARY_NAME} Threads::Threads)
+target_link_libraries(${TEST_MAIN} PRIVATE ${LIBRARY_NAME} Threads::Threads Catch2::Catch2WithMain spdlog::spdlog)
 set_target_properties(
     ${TEST_MAIN}
     PROPERTIES
