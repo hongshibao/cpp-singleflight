@@ -1,7 +1,6 @@
 #include <singleflight/singleflight.h>
 #include <spdlog/spdlog.h>
 
-#include <iostream>
 #include <string>
 #include <thread>
 #include <vector>
