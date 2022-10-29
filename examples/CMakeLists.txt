@@ -9,6 +9,9 @@ set(EXAMPLE_MAIN example) # Name for example executable.
 
 find_package(Threads REQUIRED)
 
+# Fetch external dependencies
+include(FetchContent)
+
 FetchContent_Declare(
     spdlog
     GIT_REPOSITORY https://github.com/gabime/spdlog
