@@ -92,7 +92,7 @@ using namespace std;
 
 // SingleFlight example code (with std::exception thrown)
 void example_2() {
-    singleflight::SingleFlight<string, string> sf
+    singleflight::SingleFlight<string, string> sf;
 
     // Simulate a function call which throws std::exception
     auto throwing_exception_func = [](int tid) -> string {
