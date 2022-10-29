@@ -6,11 +6,11 @@ The singleflight library is to suppress duplicate function calls into one, which
 
 ## Install
 
-### Header-Only Version
+### Header-only version
 
 Copy the include [folder](./include) to your build tree and use a C++14 compiler.
 
-### Compiled Version
+### Compiled version
 
 ```bash
 git clone https://github.com/hongshibao/cpp-singleflight
@@ -33,7 +33,7 @@ There are some other available cmake options for this project, such as:
 
 The examples code is in [examples/example.cpp](./examples/example.cpp).
 
-### Basic singleflight example
+### Singleflight basic example
 
 ```c++
 #include <singleflight/singleflight.h>
