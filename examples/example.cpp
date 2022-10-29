@@ -8,12 +8,12 @@
 using namespace std;
 
 // SingleFlight example code 1
-void example_1(singleflight::SingleFlight<string, string>& sf) {
+void example_1(singleflight::SingleFlight<string, int>& sf) {
     // Simulate a heavy function call
-    auto long_running_func = [](int tid) -> string {
+    auto long_running_func = [](int tid) -> int {
         spdlog::info("long_running_func call by Thread {}", tid);
         this_thread::sleep_for(1000ms);
-        return "Result from long_running_func";
+        return 100;
     };
 
     // Thread entry function
@@ -36,13 +36,13 @@ void example_1(singleflight::SingleFlight<string, string>& sf) {
 }
 
 // SingleFlight example code 2 (with std::exception thrown)
-void example_2(singleflight::SingleFlight<string, string>& sf) {
+void example_2(singleflight::SingleFlight<string, int>& sf) {
     // Simulate a function call which throws std::exception
-    auto throwing_exception_func = [](int tid) -> string {
+    auto throwing_exception_func = [](int tid) -> int {
         spdlog::info("throwing_exception_func call by Thread {}", tid);
         this_thread::sleep_for(500ms);
         throw runtime_error{"std::runtime_error from throwing_exception_func"};
-        return "Result from throwing_exception_func";
+        return 200;
     };
 
     // Thread entry function
@@ -70,7 +70,7 @@ void example_2(singleflight::SingleFlight<string, string>& sf) {
 }
 
 int main() {
-    singleflight::SingleFlight<string, string> sf;
+    singleflight::SingleFlight<string, int> sf;
 
     // Run example_1
     spdlog::info("====== Running example_1 ======");
