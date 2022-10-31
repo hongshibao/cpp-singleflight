@@ -79,7 +79,7 @@ TEST_CASE("Multiple threads call a same func which throws std::exception") {
         t->join();
     }
 
-    // long_running_func should only be called once
+    // throwing_exception_func should only be called once
     REQUIRE(func_call_cnt.load() == 1);
 }
 
@@ -87,7 +87,7 @@ TEST_CASE("Multiple threads call a same func which throws non std::exception") {
     SingleFlight<string, string> sf;
     atomic_int func_call_cnt{0};
 
-    // Simulate a function call which throws std::exception
+    // Simulate a function call which throws non std::exception
     auto throwing_exception_func = [&](int tid) -> string {
         ++func_call_cnt;
         spdlog::info("throwing_exception_func call by Thread {}", tid);
@@ -115,6 +115,6 @@ TEST_CASE("Multiple threads call a same func which throws non std::exception") {
         t->join();
     }
 
-    // long_running_func should only be called once
+    // throwing_exception_func should only be called once
     REQUIRE(func_call_cnt.load() == 1);
 }
