@@ -11,9 +11,10 @@
 
 cmake_minimum_required(VERSION 3.14)
 
-if(CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
-    message(FATAL_ERROR "Do not build in-source. Please remove CMakeCache.txt and the CMakeFiles/ directory. Then build out-of-source.")
-endif()
+# Custom modules and scripts
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake") # Make our cmake scripts available
+include(ConfigSafeGuards)
+include(Warnings)
 
 # Put the project early since modules might need to detect the compiler.
 # More information https://cmake.org/cmake/help/latest/command/project.html
@@ -33,10 +34,6 @@ include(CMakeDependentOption) # This is a really useful scripts that creates opt
 include(GNUInstallDirs) # This will define the default values for installation directories (all platforms even if named GNU)
 include(InstallRequiredSystemLibraries) # Tell CMake that the `install` target needs to install required system libraries (eg: Windows SDK)
 include(CMakePackageConfigHelpers) # Helper to create relocatable packages
-
-# Custom modules and scripts
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake") # Make our cmake scripts available
-include(Warnings)
 
 # ##############
 # #  OPTIONS  ##
@@ -231,13 +228,6 @@ endif()
 
 # ## EXTERNAL LIBRARIES
 # add_git_submodule(external/json)
-
-# FetchContent_Declare(
-# fmt
-# GIT_REPOSITORY https://github.com/fmtlib/fmt.git
-# GIT_TAG 8.1.1
-# GIT_SHALLOW TRUE)
-# FetchContent_MakeAvailable(fmt)
 
 # FetchContent_Declare(
 # spdlog
