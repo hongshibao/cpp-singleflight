@@ -53,29 +53,6 @@ add_test(
 # Adds a 'coverage' target.
 # include(CodeCoverage)
 
-# ============================================
-# if(ENABLE_TESTING)
-# set(TEST_MAIN
-# "unit_tests")
-# set(TEST_SOURCES
-# "main.cpp")
-
-# set(SINGLE_FLIGHT_HEADERS "../src/singleflight")
-# message(STATUS "SINGLE_FLIGHT_HEADERS: ${SINGLE_FLIGHT_HEADERS}")
-
-# find_package(Threads REQUIRED)
-
-# # set(CMAKE_CXX_FLAGS -pthread)
-# add_executable(${TEST_MAIN}
-# ${TEST_SOURCES})
-
-# target_include_directories(${TEST_MAIN} PUBLIC ${SINGLE_FLIGHT_HEADERS})
-
-# target_link_libraries(${TEST_MAIN} PRIVATE Threads::Threads)
-
-# # target_link_libraries(${TEST_MAIN} PUBLIC
-# # singleflight)
-
 # # target_link_libraries(${TEST_MAIN} PRIVATE
 # # ${CONAN_CATCH2})
 # # if(${ENABLE_WARNINGS})

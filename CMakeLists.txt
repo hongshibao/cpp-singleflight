@@ -15,6 +15,7 @@ cmake_minimum_required(VERSION 3.14)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake") # Make our cmake scripts available
 include(ConfigSafeGuards)
 include(Warnings)
+include(Coverage)
 
 # Put the project early since modules might need to detect the compiler.
 # More information https://cmake.org/cmake/help/latest/command/project.html
@@ -38,13 +39,6 @@ include(CMakePackageConfigHelpers) # Helper to create relocatable packages
 # ##############
 # #  OPTIONS  ##
 # ##############
-
-# option(USE_CONAN "Whether to use conan or vcpkg" ON)
-# option(ENABLE_COVERAGE "Enable a Code Coverage build." OFF)
-# option(ENABLE_CLANG_TIDY "Enable to add clang tidy." OFF)
-# option(ENABLE_CPPCHECK "Enable to add cppcheck." OFF)
-# option(ENABLE_LTO "Enable to add Link Time Optimization." OFF)
-# option(ENABLE_CCACHE "Enable to add Ccache." OFF)
 option(SINGLEFLIGHT_BUILD_SHARED_LIB "Build ${PROJECT_NAME} project shared library." ON)
 option(SINGLEFLIGHT_INSTALL "Should ${PROJECT_NAME} project be added to the install list? Useful if included using add_subdirectory." ON)
 option(SINGLEFLIGHT_BUILD_EXAMPLES "Build ${PROJECT_NAME} project examples." OFF)
@@ -116,7 +110,22 @@ target_set_warnings(${LIBRARY_NAME} ENABLE ALL AS_ERROR ALL DISABLE Annoying) # 
 # Set up tests (see tests/CMakeLists.txt).
 if(SINGLEFLIGHT_BUILD_TESTS)
     message(STATUS "Adding tests subdirectory")
+
+    # Let the user add options to the test runner if needed
+    set(TEST_RUNNER_PARAMS "--force-colors=true" CACHE STRING "Options to add to our test runners commands")
+
     add_subdirectory(tests)
+
+    # In a real project you most likely want to exclude test folders
+    # list(APPEND CUSTOM_COVERAGE_EXCLUDE "/tests/")
+
+    # You can setup some custom variables and add them to the CTestCustom.cmake.in template to have custom ctest settings
+    # For example, you can exclude some directories from the coverage reports such as third-parties and tests
+    configure_file(
+        ${CMAKE_CURRENT_LIST_DIR}/cmake/CTestCustom.cmake.in
+        ${CMAKE_CURRENT_BINARY_DIR}/CTestCustom.cmake
+        @ONLY
+    )
 endif()
 
 # =========#
@@ -206,14 +215,6 @@ endif()
 
 # ===================================================
 
-# ## CMAKE MODULES
-# set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/)
-# include(ConfigSafeGuards)
-# include(Warnings)
-# include(Docs)
-# include(AddGitSubmodule)
-# include(FetchContent)
-
 # include(StaticAnalyzers)
 # include(LTO)
 # include(Ccache)
@@ -228,13 +229,6 @@ endif()
 
 # ## EXTERNAL LIBRARIES
 # add_git_submodule(external/json)
-
-# FetchContent_Declare(
-# spdlog
-# GIT_REPOSITORY https://github.com/gabime/spdlog
-# GIT_TAG v1.9.2
-# GIT_SHALLOW TRUE)
-# FetchContent_MakeAvailable(spdlog)
 
 # if(USE_CONAN)
 # message("Using Conan")

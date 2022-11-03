@@ -11,7 +11,8 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        # os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest]
         # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
         buildtype: [Debug, Release]
     runs-on: ${{ matrix.os }}
