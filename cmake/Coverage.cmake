@@ -58,6 +58,7 @@ foreach(_LANG IN LISTS ENABLED_LANGUAGES)
         set(CMAKE_${_LANG}_FLAGS_COVERAGE
             ${COVERAGE_COMPILER_FLAGS}
             CACHE STRING "Flags used by the ${_LANG} compiler during coverage builds."
+            FORCE
         )
         mark_as_advanced(CMAKE_${_LANG}_FLAGS_COVERAGE)
         set(COVERAGE_SUPPORTED TRUE CACHE INTERNAL "Whether or not coverage is supported by at least one compiler.")

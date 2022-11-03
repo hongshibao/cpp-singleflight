@@ -14,8 +14,6 @@ cmake_minimum_required(VERSION 3.14)
 # Custom modules and scripts
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake") # Make our cmake scripts available
 include(ConfigSafeGuards)
-include(Warnings)
-include(Coverage)
 
 # Put the project early since modules might need to detect the compiler.
 # More information https://cmake.org/cmake/help/latest/command/project.html
@@ -35,6 +33,10 @@ include(CMakeDependentOption) # This is a really useful scripts that creates opt
 include(GNUInstallDirs) # This will define the default values for installation directories (all platforms even if named GNU)
 include(InstallRequiredSystemLibraries) # Tell CMake that the `install` target needs to install required system libraries (eg: Windows SDK)
 include(CMakePackageConfigHelpers) # Helper to create relocatable packages
+
+# Custom CMake modules and scripts
+include(Warnings)
+include(Coverage)
 
 # ##############
 # #  OPTIONS  ##
@@ -117,7 +119,7 @@ if(SINGLEFLIGHT_BUILD_TESTS)
     add_subdirectory(tests)
 
     # In a real project you most likely want to exclude test folders
-    # list(APPEND CUSTOM_COVERAGE_EXCLUDE "/tests/")
+    list(APPEND CUSTOM_COVERAGE_EXCLUDE "/tests/")
 
     # You can setup some custom variables and add them to the CTestCustom.cmake.in template to have custom ctest settings
     # For example, you can exclude some directories from the coverage reports such as third-parties and tests
@@ -227,9 +229,6 @@ endif()
 # find_lto(CXX)
 # endif()
 
-# ## EXTERNAL LIBRARIES
-# add_git_submodule(external/json)
-
 # if(USE_CONAN)
 # message("Using Conan")
 # include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
@@ -241,11 +240,3 @@ endif()
 # find_package(Catch2 CONFIG REQUIRED)
 # find_package(cxxopts CONFIG REQUIRED)
 # endif()
-
-# ## SUB DIRECTORIES
-# add_subdirectory(configured)
-# add_subdirectory(external)
-# add_subdirectory(src)
-
-# add_subdirectory(app)
-# add_subdirectory(tests)
