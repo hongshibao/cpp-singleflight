@@ -69,10 +69,12 @@ if(COVERAGE_SUPPORTED)
     set(CMAKE_EXE_LINKER_FLAGS_COVERAGE
         "${COVERAGE_LINKER_FLAGS}"
         CACHE STRING "Flags used for linking binaries during coverage builds."
+        FORCE
     )
     set(CMAKE_SHARED_LINKER_FLAGS_COVERAGE
         "${COVERAGE_LINKER_FLAGS}"
         CACHE STRING "Flags used by the shared libraries linker during coverage builds."
+        FORCE
     )
     mark_as_advanced(
         CMAKE_EXE_LINKER_FLAGS_COVERAGE
