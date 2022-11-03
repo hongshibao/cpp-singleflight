@@ -11,10 +11,17 @@ jobs:
   build:
     strategy:
       matrix:
-        # os: [ubuntu-latest, windows-latest, macos-latest]
-        os: [ubuntu-latest]
+        os:
+          - ubuntu-latest
+          # - windows-latest
+          # - macos-latest
         # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
-        buildtype: [Debug, Release]
+        buildtype:
+          - Debug
+          - Release
+        include:
+          - os: ubuntu-latest
+            buildtype: Coverage
     runs-on: ${{ matrix.os }}
     steps:
     - name: Checkout Code
@@ -22,17 +29,11 @@ jobs:
       with:
         submodules: 'recursive'
 
-    - name: Configure CMake
-      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
-      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      run: cmake -B ${{runner.workspace}}/build -DCMAKE_BUILD_TYPE=${{ matrix.buildtype }}
-
-    - name: Build
-      # Build your program with the given configuration
-      run: cmake --build ${{runner.workspace}}/build --config ${{ matrix.buildtype }}
-
-    - name: Test
-      working-directory: ${{runner.workspace}}/build
-      # Execute tests defined by the CMake configuration.  
-      # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-      run: ctest -C ${{ matrix.buildtype }}
+    - name: Build and Test
+      run: |
+        cmake --version
+        if [[ "${{ matrix.buildtype }}" == "Coverage" ]]; then
+          ctest -S cmake/CI.CTestScript.cmake --output-on-failure -VV -DCTEST_SITE=GitHub -DCTEST_BUILD_NAME="${{ matrix.os }}-${{ matrix.buildtype }}"
+        else
+          mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=${{ matrix.buildtype }} .. && make -j4 && ctest -VV .
+        fi
