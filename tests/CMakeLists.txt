@@ -49,31 +49,3 @@ add_test(
     # Use some per-module/project prefix so that it is easier to run only tests for this module
     NAME ${LIBRARY_NAME}.${TEST_MAIN} COMMAND ${TEST_MAIN} ${TEST_RUNNER_PARAMS}
 )
-
-# Adds a 'coverage' target.
-# include(CodeCoverage)
-
-# # target_link_libraries(${TEST_MAIN} PRIVATE
-# # ${CONAN_CATCH2})
-# # if(${ENABLE_WARNINGS})
-# # target_set_warnings(TARGET ${TEST_MAIN} ENABLE ON AS_ERROR OFF)
-# # endif()
-
-# # if(ENABLE_COVERAGE)
-# # set(COVERAGE_MAIN "coverage")
-# # set(COVERAGE_EXCLUDES
-# # "${PROJECT_SOURCE_DIR}/app/*"
-# # "${PROJECT_SOURCE_DIR}/cmake/*"
-# # "${PROJECT_SOURCE_DIR}/docs/*"
-# # "${PROJECT_SOURCE_DIR}/external/*"
-# # "${PROJECT_SOURCE_DIR}/tests/*"
-# # "${CONAN_CATCH2_ROOT}/*"
-# # "${CONAN_CXXOPTS_ROOT}/*"
-# # "/usr/include/*")
-# # setup_target_for_coverage_lcov(
-# # NAME ${COVERAGE_MAIN}
-# # EXECUTABLE ${TEST_MAIN}
-# # DEPENDENCIES ${TEST_MAIN}
-# # )
-# # endif()
-# endif()
