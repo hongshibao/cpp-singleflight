@@ -31,7 +31,6 @@ jobs:
 
     - name: Build and Test
       run: |
-        cmake --version
         if [[ "${{ matrix.buildtype }}" == "Coverage" ]]; then
           ctest -S cmake/CI.CTestScript.cmake --output-on-failure -VV -DCTEST_SITE=GitHub -DCTEST_BUILD_NAME="${{ matrix.os }}-${{ matrix.buildtype }}"
         else
