@@ -43,4 +43,4 @@ jobs:
       env:
         CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
       with:
-        coverageLocations: ${{ github.workspace }}/buildCI/Testing/*/CoverageLog-0.xml:cobertura
+        coverageLocations: ${{ github.workspace }}/buildCI/Testing/*/CoverageLog-0.xml:gcov
