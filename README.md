@@ -2,6 +2,7 @@
 ![GitHub](https://img.shields.io/github/license/hongshibao/cpp-singleflight)
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/hongshibao/cpp-singleflight/CI)
 [![codecov](https://codecov.io/gh/hongshibao/cpp-singleflight/branch/main/graph/badge.svg?token=SW62SVNATO)](https://codecov.io/gh/hongshibao/cpp-singleflight)
+[![Percentage of issues still open](https://isitmaintained.com/badge/open/hongshibao/cpp-singleflight.svg)](http://isitmaintained.com/project/hongshibao/cpp-singleflight "Percentage of issues still open")
 
 # cpp-singleflight
 
