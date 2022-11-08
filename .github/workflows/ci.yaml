@@ -38,6 +38,7 @@ jobs:
         fi
 
     - name: Publish Code Coverage
+      if: ${{ matrix.buildtype == 'Coverage' }}
       uses: codecov/codecov-action@v3
       with:
         token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
