@@ -32,15 +32,14 @@ jobs:
     - name: Build and Test
       run: |
         if [[ "${{ matrix.buildtype }}" == "Coverage" ]]; then
-          ctest -S cmake/CI.CTestScript.cmake --output-on-failure -VV -DCTEST_SITE=GitHub -DCTEST_BUILD_NAME="${{ matrix.os }}-${{ matrix.buildtype }}"
+          ctest -S cmake/CI.CTestScript.cmake --output-on-failure -V -DCTEST_SITE=GitHub -DCTEST_BUILD_NAME="${{ matrix.os }}-${{ matrix.buildtype }}"
         else
           mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=${{ matrix.buildtype }} .. && make -j4 && ctest -VV .
         fi
 
     - name: Publish Code Coverage
       if: ${{ matrix.buildtype == 'Coverage' }}
-      uses: paambaati/codeclimate-action@v3.2.0
-      env:
-        CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+      uses: codecov/codecov-action@v3
       with:
-        coverageLocations: ${{ github.workspace }}/buildCI/Testing/*/CoverageLog-0.xml:gcov
+        token: ${{ secrets.CODECOV_TOKEN }}
+        fail_ci_if_error: true
