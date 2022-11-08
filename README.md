@@ -1,4 +1,7 @@
-[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active) [![codecov](https://codecov.io/gh/hongshibao/cpp-singleflight/branch/main/graph/badge.svg?token=SW62SVNATO)](https://codecov.io/gh/hongshibao/cpp-singleflight)
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+![GitHub](https://img.shields.io/github/license/hongshibao/cpp-singleflight)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/hongshibao/cpp-singleflight/CI)
+[![codecov](https://codecov.io/gh/hongshibao/cpp-singleflight/branch/main/graph/badge.svg?token=SW62SVNATO)](https://codecov.io/gh/hongshibao/cpp-singleflight)
 
 # cpp-singleflight
 
