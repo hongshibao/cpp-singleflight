@@ -1,3 +1,5 @@
+[![codecov](https://codecov.io/gh/hongshibao/cpp-singleflight/branch/main/graph/badge.svg?token=SW62SVNATO)](https://codecov.io/gh/hongshibao/cpp-singleflight)
+
 # cpp-singleflight
 
 A header-only/compiled C++ singleflight library.
