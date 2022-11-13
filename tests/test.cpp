@@ -13,6 +13,15 @@ using namespace std;
 using namespace singleflight;
 using Catch::Matchers::Message;
 
+template <typename ExType>
+string ThrowingExceptionFunc(int tid, atomic_int& func_call_cnt, const ExType& ex) {
+    ++func_call_cnt;
+    spdlog::info("throwing_exception_func call by Thread {}", tid);
+    this_thread::sleep_for(500ms);
+    throw ex;
+    return "Result from throwing_exception_func";
+}
+
 void LaunchAndWaitThreads(function<void(int)>&& thread_entry_func) {
     // Launch threads
     static constexpr int THREADS_NUM = 5;
@@ -60,11 +69,10 @@ TEST_CASE("Multiple threads call a same func which throws std::exception") {
 
     // Simulate a function call which throws std::exception
     auto throwing_exception_func = [&](int tid) -> string {
-        ++func_call_cnt;
-        spdlog::info("throwing_exception_func call by Thread {}", tid);
-        this_thread::sleep_for(500ms);
-        throw runtime_error{"std::runtime_error from throwing_exception_func"};
-        return "Result from throwing_exception_func";
+        return ThrowingExceptionFunc<runtime_error>(
+            tid,
+            func_call_cnt,
+            runtime_error{"std::runtime_error from throwing_exception_func"});
     };
 
     // Thread entry function
@@ -86,11 +94,10 @@ TEST_CASE("Multiple threads call a same func which throws non std::exception") {
 
     // Simulate a function call which throws non std::exception
     auto throwing_exception_func = [&](int tid) -> string {
-        ++func_call_cnt;
-        spdlog::info("throwing_exception_func call by Thread {}", tid);
-        this_thread::sleep_for(500ms);
-        throw "non std::exception from throwing_exception_func";
-        return "Result from throwing_exception_func";
+        return ThrowingExceptionFunc<string>(
+            tid,
+            func_call_cnt,
+            "non std::exception from throwing_exception_func");
     };
 
     // Thread entry function
