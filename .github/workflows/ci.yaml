@@ -14,7 +14,7 @@ jobs:
         os:
           - ubuntu-latest
           # - windows-latest
-          # - macos-latest
+          - macos-latest
         # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
         buildtype:
           - Debug
