@@ -44,7 +44,7 @@ class SingleFlight {
 
         try {
             // Call the actual function to fetch the result
-            ptr->result = func(args...);
+            ptr->result = func(std::forward<Args>(args)...);
         } catch (const std::exception& ex) {
             ptr->has_ex = true;
             ptr->ex = FuncCallFailedException(ex.what());
