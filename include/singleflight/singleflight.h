@@ -13,6 +13,11 @@ class FuncCallFailedException : public std::runtime_error {
     explicit FuncCallFailedException(const std::string& msg) noexcept : std::runtime_error{msg} {}
     explicit FuncCallFailedException(const char* msg) noexcept : std::runtime_error{msg} {}
 
+    FuncCallFailedException(const FuncCallFailedException&) = default;
+    FuncCallFailedException& operator=(const FuncCallFailedException&) = default;
+    FuncCallFailedException(FuncCallFailedException&&) = default;
+    FuncCallFailedException& operator=(FuncCallFailedException&&) = default;
+
     ~FuncCallFailedException() noexcept override;
 };
 
