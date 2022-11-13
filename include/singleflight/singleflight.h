@@ -10,8 +10,7 @@ namespace singleflight {
 
 class FuncCallFailedException : public std::runtime_error {
    public:
-    explicit FuncCallFailedException(const std::string& msg) noexcept : std::runtime_error{msg} {}
-    explicit FuncCallFailedException(const char* msg) noexcept : std::runtime_error{msg} {}
+    using std::runtime_error::runtime_error;
 
     FuncCallFailedException(const FuncCallFailedException&) = default;
     FuncCallFailedException& operator=(const FuncCallFailedException&) = default;
