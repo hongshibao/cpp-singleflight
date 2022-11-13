@@ -13,6 +13,19 @@ using namespace std;
 using namespace singleflight;
 using Catch::Matchers::Message;
 
+void LaunchAndWaitThreads(function<void(int)>&& thread_entry_func) {
+    // Launch threads
+    static constexpr int THREADS_NUM = 5;
+    vector<shared_ptr<thread>> threads;
+    for (int i = 0; i < THREADS_NUM; ++i) {
+        threads.push_back(make_shared<thread>(thread_entry_func, i));
+    }
+    // Waiting
+    for (auto t : threads) {
+        t->join();
+    }
+}
+
 TEST_CASE("Multiple threads call a same func using a same key") {
     SingleFlight<string, string> sf;
     atomic_int func_call_cnt{0};
@@ -34,16 +47,8 @@ TEST_CASE("Multiple threads call a same func using a same key") {
         REQUIRE(res == LONG_RUNNING_FUNC_RESULT);
     };
 
-    // Launch threads
-    constexpr int THREADS_NUM = 5;
-    vector<shared_ptr<thread>> threads;
-    for (int i = 0; i < THREADS_NUM; ++i) {
-        threads.push_back(make_shared<thread>(thread_entry_func, i));
-    }
-    // Waiting
-    for (auto t : threads) {
-        t->join();
-    }
+    // Launch threads and wait
+    LaunchAndWaitThreads(thread_entry_func);
 
     // long_running_func should only be called once
     REQUIRE(func_call_cnt.load() == 1);
@@ -68,16 +73,8 @@ TEST_CASE("Multiple threads call a same func which throws std::exception") {
         REQUIRE_THROWS_AS(sf.Do("some-key", throwing_exception_func, tid), FuncCallFailedException);
     };
 
-    // Launch threads
-    constexpr int THREADS_NUM = 5;
-    vector<shared_ptr<thread>> threads;
-    for (int i = 0; i < THREADS_NUM; ++i) {
-        threads.push_back(make_shared<thread>(thread_entry_func, i));
-    }
-    // Waiting
-    for (auto t : threads) {
-        t->join();
-    }
+    // Launch threads and wait
+    LaunchAndWaitThreads(thread_entry_func);
 
     // throwing_exception_func should only be called once
     REQUIRE(func_call_cnt.load() == 1);
@@ -104,16 +101,8 @@ TEST_CASE("Multiple threads call a same func which throws non std::exception") {
                                Message("Func call threw non-std-exception"));
     };
 
-    // Launch threads
-    constexpr int THREADS_NUM = 5;
-    vector<shared_ptr<thread>> threads;
-    for (int i = 0; i < THREADS_NUM; ++i) {
-        threads.push_back(make_shared<thread>(thread_entry_func, i));
-    }
-    // Waiting
-    for (auto t : threads) {
-        t->join();
-    }
+    // Launch threads and wait
+    LaunchAndWaitThreads(thread_entry_func);
 
     // throwing_exception_func should only be called once
     REQUIRE(func_call_cnt.load() == 1);

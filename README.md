@@ -1,6 +1,7 @@
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 ![GitHub](https://img.shields.io/github/license/hongshibao/cpp-singleflight)
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/hongshibao/cpp-singleflight/CI)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/1da0f810d26849c396f827a962c93dcc)](https://www.codacy.com/gh/hongshibao/cpp-singleflight/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=hongshibao/cpp-singleflight&amp;utm_campaign=Badge_Grade)
 [![codecov](https://codecov.io/gh/hongshibao/cpp-singleflight/branch/main/graph/badge.svg?token=SW62SVNATO)](https://codecov.io/gh/hongshibao/cpp-singleflight)
 [![Percentage of issues still open](https://isitmaintained.com/badge/open/hongshibao/cpp-singleflight.svg)](http://isitmaintained.com/project/hongshibao/cpp-singleflight "Percentage of issues still open")
 
@@ -31,9 +32,9 @@ cmake -DCMAKE_INSTALL_PREFIX=/the/path/to/install ..
 
 There are some other available cmake options for this project, such as:
 
-1. `SINGLEFLIGHT_BUILD_SHARED_LIB`: to build shared lib or static lib.
-2. `SINGLEFLIGHT_BUILD_TESTS`: whether to build unit tests.
-3. `SINGLEFLIGHT_BUILD_EXAMPLES`: whether to build examples.
+1.  `SINGLEFLIGHT_BUILD_SHARED_LIB`: to build shared lib or static lib.
+2.  `SINGLEFLIGHT_BUILD_TESTS`: whether to build unit tests.
+3.  `SINGLEFLIGHT_BUILD_EXAMPLES`: whether to build examples.
 
 ## Usage Samples
 
