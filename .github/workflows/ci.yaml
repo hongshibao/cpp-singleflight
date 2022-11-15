@@ -34,7 +34,7 @@ jobs:
       run: |
         cmake -B build -DCMAKE_BUILD_TYPE=${{ matrix.buildtype }}
         cmake --build build --config ${{ matrix.buildtype }}
-        ctest -VV .
+        cd build && ctest -VV
 
     - name: Build and Test for Code Coverage
       if: ${{ matrix.buildtype == 'Coverage' }}
