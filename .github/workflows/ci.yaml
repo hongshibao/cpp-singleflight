@@ -32,7 +32,9 @@ jobs:
     - name: Build and Test
       if: ${{ matrix.buildtype != 'Coverage' }}
       run: |
-        mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=${{ matrix.buildtype }} .. && make -j4 && ctest -VV .
+        cmake -B build -DCMAKE_BUILD_TYPE=${{ matrix.buildtype }}
+        cmake --build build --config ${{ matrix.buildtype }}
+        ctest -VV .
 
     - name: Build and Test for Code Coverage
       if: ${{ matrix.buildtype == 'Coverage' }}
