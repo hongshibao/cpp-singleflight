@@ -21,7 +21,6 @@ string ThrowingExceptionFunc(int tid, atomic_int& func_call_cnt, const ExType& e
     spdlog::info("throwing_exception_func call by Thread {}", tid);
     this_thread::sleep_for(500ms);
     throw ex;
-    return "Result from throwing_exception_func";
 }
 
 void LaunchAndWaitThreads(function<void(int)>&& thread_entry_func) {
