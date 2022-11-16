@@ -36,8 +36,14 @@ jobs:
         cmake -B build -DCMAKE_BUILD_TYPE=${{ matrix.buildtype }}
         cmake --build build --config ${{ matrix.buildtype }}
         cd build
-        [[ ${{ matrix.os }} == windows* ]] && mv ${{ matrix.buildtype }}/* ./
-        ctest -VV
+        if [[ ${{ matrix.os }} == windows* ]]; then
+          ls -l tests
+          cat tests/CTestTestfile.cmake
+          cd ${{ matrix.buildtype }}
+          ./unit_tests.exe
+        else
+          ctest -VV
+        fi
 
     - name: Build and Test for Code Coverage
       if: ${{ matrix.buildtype == 'Coverage' }}
