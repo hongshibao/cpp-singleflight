@@ -12,7 +12,6 @@ find_package(Threads REQUIRED)
 
 # Fetch external dependencies
 include(FetchContent)
-include(CTest)
 
 FetchContent_Declare(
     spdlog
