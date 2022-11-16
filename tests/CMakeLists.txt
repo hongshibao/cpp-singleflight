@@ -44,15 +44,7 @@ set_target_properties(
 target_set_warnings(${TEST_MAIN} ENABLE ALL AS_ERROR ALL DISABLE Annoying) # Set warnings.
 
 # Disable some warnings for `fmt` library
-if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-    target_compile_options(
-        ${TEST_MAIN}
-        PRIVATE
-        "/wddocumentation-unknown-command"
-        "/wdfloat-equal"
-        "/wdundefined-func-template"
-    )
-else()
+if(NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
     target_compile_options(
         ${TEST_MAIN}
         PRIVATE
