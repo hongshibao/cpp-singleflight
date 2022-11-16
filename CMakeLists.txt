@@ -93,6 +93,7 @@ set_target_properties(
     CXX_STANDARD 14
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO
+    WINDOWS_EXPORT_ALL_SYMBOLS YES
 )
 
 # For custom settings.
