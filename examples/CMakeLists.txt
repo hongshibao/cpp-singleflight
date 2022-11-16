@@ -32,10 +32,14 @@ set_target_properties(
     CXX_EXTENSIONS NO
 )
 target_set_warnings(${EXAMPLE_MAIN} ENABLE ALL AS_ERROR ALL DISABLE Annoying) # Set warnings.
-target_compile_options(
-    ${EXAMPLE_MAIN}
-    PRIVATE
-    "-Wno-documentation-unknown-command"
-    "-Wno-float-equal"
-    "-Wno-undefined-func-template"
-) # Disable some warnings for `fmt` library
+
+# Disable some warnings for `fmt` library
+if(NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+    target_compile_options(
+        ${EXAMPLE_MAIN}
+        PRIVATE
+        "-Wno-documentation-unknown-command"
+        "-Wno-float-equal"
+        "-Wno-undefined-func-template"
+    )
+endif()

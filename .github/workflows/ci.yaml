@@ -33,7 +33,7 @@ jobs:
       if: ${{ matrix.buildtype != 'Coverage' }}
       shell: bash
       run: |
-        cmake -B build -DCMAKE_BUILD_TYPE=${{ matrix.buildtype }}
+        cmake -B build -DCMAKE_BUILD_TYPE=${{ matrix.buildtype }} -DSINGLEFLIGHT_BUILD_EXAMPLES=ON
         cmake --build build --config ${{ matrix.buildtype }}
         cd build
         ctest -VV -C ${{ matrix.buildtype }}
