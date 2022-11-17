@@ -13,13 +13,14 @@ using namespace std;
 using namespace singleflight;
 using Catch::Matchers::Message;
 
+namespace {
+
 template <typename ExType>
 string ThrowingExceptionFunc(int tid, atomic_int& func_call_cnt, const ExType& ex) {
     ++func_call_cnt;
     spdlog::info("throwing_exception_func call by Thread {}", tid);
     this_thread::sleep_for(500ms);
     throw ex;
-    return "Result from throwing_exception_func";
 }
 
 void LaunchAndWaitThreads(function<void(int)>&& thread_entry_func) {
@@ -34,6 +35,8 @@ void LaunchAndWaitThreads(function<void(int)>&& thread_entry_func) {
         t->join();
     }
 }
+
+}  // namespace
 
 TEST_CASE("Multiple threads call a same func using a same key") {
     SingleFlight<string, string> sf;

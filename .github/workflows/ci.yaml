@@ -13,8 +13,8 @@ jobs:
       matrix:
         os:
           - ubuntu-latest
-          # - windows-latest
-          # - macos-latest
+          - windows-latest
+          - macos-latest
         # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
         buildtype:
           - Debug
@@ -25,17 +25,23 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - name: Checkout Code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         submodules: 'recursive'
 
     - name: Build and Test
+      if: ${{ matrix.buildtype != 'Coverage' }}
+      shell: bash
       run: |
-        if [[ "${{ matrix.buildtype }}" == "Coverage" ]]; then
-          ctest -S cmake/CI.CTestScript.cmake --output-on-failure -V -DCTEST_SITE=GitHub -DCTEST_BUILD_NAME="${{ matrix.os }}-${{ matrix.buildtype }}"
-        else
-          mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=${{ matrix.buildtype }} .. && make -j4 && ctest -VV .
-        fi
+        cmake -B build -DCMAKE_BUILD_TYPE=${{ matrix.buildtype }} -DSINGLEFLIGHT_BUILD_EXAMPLES=ON
+        cmake --build build --config ${{ matrix.buildtype }}
+        cd build
+        ctest -VV -C ${{ matrix.buildtype }}
+
+    - name: Build and Test for Code Coverage
+      if: ${{ matrix.buildtype == 'Coverage' }}
+      run: |
+        ctest -S cmake/CI.CTestScript.cmake --output-on-failure -V -DCTEST_SITE=GitHub -DCTEST_BUILD_NAME="${{ matrix.os }}-${{ matrix.buildtype }}"
 
     - name: Publish Code Coverage
       if: ${{ matrix.buildtype == 'Coverage' }}

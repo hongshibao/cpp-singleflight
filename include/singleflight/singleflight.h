@@ -10,8 +10,17 @@ namespace singleflight {
 
 class FuncCallFailedException : public std::runtime_error {
    public:
-    FuncCallFailedException(const std::string& msg) : std::runtime_error{msg} {}
+    using std::runtime_error::runtime_error;
+
+    FuncCallFailedException(const FuncCallFailedException&) = default;
+    FuncCallFailedException& operator=(const FuncCallFailedException&) = default;
+    FuncCallFailedException(FuncCallFailedException&&) = default;
+    FuncCallFailedException& operator=(FuncCallFailedException&&) = default;
+
+    ~FuncCallFailedException() noexcept override;
 };
+
+FuncCallFailedException::~FuncCallFailedException() noexcept {}
 
 template <typename TKey, typename TRet>
 class SingleFlight {

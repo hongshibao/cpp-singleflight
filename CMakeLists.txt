@@ -76,8 +76,10 @@ set(INCLUDE_DIR
 
 if(SINGLEFLIGHT_BUILD_SHARED_LIB)
     add_library(${LIBRARY_NAME} SHARED ${SRC_FILES})
+    set(WINDOWS_EXPORT_ALL_SYMBOLS YES)
 else()
     add_library(${LIBRARY_NAME} STATIC ${SRC_FILES})
+    set(WINDOWS_EXPORT_ALL_SYMBOLS NO)
 endif()
 
 # Since we put the public interface headers in the include directory, we need to tell the compiler so that we can #include <file>.
@@ -93,6 +95,7 @@ set_target_properties(
     CXX_STANDARD 14
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO
+    WINDOWS_EXPORT_ALL_SYMBOLS ${WINDOWS_EXPORT_ALL_SYMBOLS}
 )
 
 # For custom settings.

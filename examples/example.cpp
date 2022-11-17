@@ -7,6 +7,8 @@
 
 using namespace std;
 
+namespace {
+
 // SingleFlight example code 1
 void example_1(singleflight::SingleFlight<string, int>& sf) {
     // Simulate a heavy function call
@@ -42,7 +44,6 @@ void example_2(singleflight::SingleFlight<string, int>& sf) {
         spdlog::info("throwing_exception_func call by Thread {}", tid);
         this_thread::sleep_for(500ms);
         throw runtime_error{"std::runtime_error from throwing_exception_func"};
-        return 200;
     };
 
     // Thread entry function
@@ -68,6 +69,8 @@ void example_2(singleflight::SingleFlight<string, int>& sf) {
         t->join();
     }
 }
+
+}  // namespace
 
 int main() {
     singleflight::SingleFlight<string, int> sf;

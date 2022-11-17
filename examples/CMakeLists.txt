@@ -15,7 +15,7 @@ include(FetchContent)
 FetchContent_Declare(
     spdlog
     GIT_REPOSITORY https://github.com/gabime/spdlog
-    GIT_TAG v1.10.0
+    GIT_TAG v1.11.0
     GIT_SHALLOW TRUE
     FIND_PACKAGE_ARGS
 )
@@ -31,5 +31,15 @@ set_target_properties(
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO
 )
-
 target_set_warnings(${EXAMPLE_MAIN} ENABLE ALL AS_ERROR ALL DISABLE Annoying) # Set warnings.
+
+# Disable some warnings for `fmt` library
+if(NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+    target_compile_options(
+        ${EXAMPLE_MAIN}
+        PRIVATE
+        "-Wno-documentation-unknown-command"
+        "-Wno-float-equal"
+        "-Wno-undefined-func-template"
+    )
+endif()
