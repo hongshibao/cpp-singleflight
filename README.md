@@ -37,9 +37,9 @@ There are some other available cmake options for this project, such as:
 2.  `SINGLEFLIGHT_BUILD_TESTS`: whether to build unit tests.
 3.  `SINGLEFLIGHT_BUILD_EXAMPLES`: whether to build examples.
 
-## Usage Samples
+## Usage Examples
 
-The examples code is in [examples/example.cpp](./examples/example.cpp).
+The example code is in [examples/example.cpp](./examples/example.cpp).
 
 ### Singleflight basic example
 
@@ -107,7 +107,6 @@ void example_2() {
         spdlog::info("throwing_exception_func call by Thread {}", tid);
         this_thread::sleep_for(500ms);
         throw runtime_error{"std::runtime_error from throwing_exception_func"};
-        return 200;
     };
 
     // Thread entry function
